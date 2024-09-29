@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Movie { 
+    id Int @id @default(autoincrement()) @unique
+    name String @db.VarChar(255)
+    releaseDate String
+    rating Int? @default(0)
+    review Review[]
+}
+model Review{
+    id Int @id @default(autoincrement()) @unique
+    reviewerName String @db.VarChar(255)
+    rating Int 
+    comments String @db.VarChar(255)
+    movieId Int
+    movie_id Movie @relation(fields: [movieId],references: [id]) 
+
+}
+// A Movie has the following attributes:
+// Name
+// Release date
+// Average rating (max 10) (optional, null if no ratings yet)
+
+// A Review has the following attributes:
+// Movie ID 
+// Reviewer name (optional)
+// Rating (max 10)
+// Review comments
